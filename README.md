@@ -160,11 +160,11 @@ mkdir -p <directory>\primary <directory>\backup <directory>\arbiter
 
 ```bash
 > @REM Primary
-> start "primaryDB" mongod --dbpath <directory>\primary --logpath <directory>/primary/<primaryDB>.log --port 3000 --replSet "demo"
+> start "primaryDB" mongod --dbpath <directory>\primary --logpath <directory>\primary\<primaryDB>.log --port 3000 --replSet "demo"
 > @REM Secondary
-> start "backupDB" mongod --dbpath <directory>\backup --logpath <directory>/backup/<backupDB>.log --port 4000 --replSet "demo"
+> start "backupDB" mongod --dbpath <directory>\backup --logpath <directory>\backup\<backupDB>.log --port 4000 --replSet "demo"
 > @REM Arbiter
->start "arbiter" mongod --dbpath <directory>\arbiter --logpath <directory>/arbiter/<arbiter>.log --port 5000 --replSet "demo"
+>start "arbiter" mongod --dbpath <directory>\arbiter --logpath <directory>\arbiter\<arbiter>.log --port 5000 --replSet "demo"
 ```
 
 > Where:
@@ -176,6 +176,8 @@ mkdir -p <directory>\primary <directory>\backup <directory>\arbiter
 The above commands will open 3 terminals, one for each one, at this point they don't know match
 
 Notice that you can add more options to `start` command like more verbosite `--verbose vvvvv`
+
+Note: *each time you reboot the machine this steps needs to be performed in order to start the servers*
 
 #### Configuration
 
@@ -234,7 +236,7 @@ let demoConfig = {
 
   If you have an error with the step 3, redefine the object as follow and try it again
 
-  ```bash
+  ```javascript
   demoConfig = { "_id": "demo", "members": [ { "_id": 0, "host": "localhost:3000", "priority": 10 }, { "_id": 1, "host": "localhost:4000" }, { "_id": 2, "host": "localhost:5000", "arbiterOnly": true } ] }
   ```
 
