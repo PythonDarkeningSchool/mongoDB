@@ -440,3 +440,432 @@ The only data type exclude is an array:
 
 ![excluded_Ids](img/excluded_Ids.jpg)
 
+## Object Id
+
+Now we know that every record needs to has an `object id`, but it you do not specify it mongo will assign a random `object id`, e.g:
+
+```bash
+> use foo
+> db.users.save({Name: 'Bob'})
+> db.users.find()
+{ "_id" : ObjectId("5c98eb74ade48a7abe016e60"), "Name" : "Bob" }
+```
+
+> Where:
+>
+> - `db` => refers to the current database which is `foo` 
+>
+> - `users` => refers to the collection ""`table"` where the results will be saved (if does not exists mongo will create it)
+>
+> - `find()` => its a function to find all the records in a collection
+
+* *ObjectId()* it is a function that you can use from the shell in order to get a random`object id`
+* *ObjectId()* contains a `method` to get their timestamp, `ObjectId().getTimestamp()`, this is very useful to avoid created another field that contains the document creation time, you have that in the `ObjectId()` 
+
+## Insert
+
+Mongo allows to insert a document with the same Id
+
+```bash
+> use foo
+> db.users.save({_id:1, Name: 'Bob'})
+> db.users.save({_id:1, Name: 'Sinclair'})
+> db.users.find()
+{ "_id" : 1, "Name" : "Sinclair" }
+```
+
+
+
+But this is not an insert totally, is likely as `modified`, if you need to be sure that the document will be *insert* only if the `Id` does not exists, use `insert` command instead because the `save` command will overwrite the document:
+
+```bash
+> use foo
+> db.users.insert({_id:1, Name: 'Bob'})
+> db.users.insert({_id:1, Name: 'Sinclair'})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 11000,
+                "errmsg" : "E11000 duplicate key error collection: foo.users index: _id_ dup key: { : 1.0 }"
+        }
+})
+```
+
+> The first example can we take as `Insert some document with an Id` to perform some operations e.g: if you took the email address as an id, when some user try to insert the database with the same email address you can show an error in frontend due to *`insert` command does not allow duplicates*
+
+## Update
+
+`Save` command it not safe for updating documents, because it does not has concurrency and in the situation where two clients needs to update the same document id, one may be overwriting the document that the other has already write.
+
+`Update` command prevent this situation and only allow to update *one by one*, the syntaxes is the following:
+
+![update_command](img/update_command.JPG)
+
+> Where:
+>
+> - `options` => parameter is optional
+
+Example:
+
+```bash
+> db.a.save({_id:1, x:10})
+> db.a.update({_id:1}, {$inc:{x:1}} )
+> db.a.find()
+{ "_id" : 1, "x" : 11 }
+```
+
+> Where:
+>
+> - `a` => its the collection
+>
+> - `$inc` => its a mongo function that takes two arguments, the first is the key to increment and the second is the value to increment
+
+### Set
+
+`Set` command is used (along with `update` command) to *add a new field* (key-value) to the document that does not exists on it, e.g:
+
+```bash
+> db.a.update({_id:1}, {$set:{y:3}} )
+{ "_id" : 1, "x" : 11, "y" : 3 }
+```
+
+### Unset
+
+`Unset` command is used to *remove a field* (key-value) in the collection, e.g:
+
+```bash
+> db.a.update({_id:1}, {$unset:{y:''}} )
+{ "_id" : 1, "x" : 11 }
+```
+
+> Where:
+>
+> - `''` => is to indicate that the field `y` will be removed, also it could has a *0* as value
+
+### Rename
+
+`Raname` command is used to update *keys* (not values), e.g:
+
+```bash
+> db.a.update({_id:1}, {$rename:{'Naem':'Name'}} )
+```
+
+### Push (for array operations)
+
+`Push` command it used to insert the values as a list (as an array), and update that list in the second call, e.g:
+
+```bash
+> db.a.update({_id:1}, {$push: {things: 'one'} })
+> db.a.find()
+{ "_id" : 1, "Name" : "bob", "things" : [ "one" ] }
+> db.a.update({_id:1}, {$push: {things: 'two'} })
+> db.a.find()
+{ "_id" : 1, "Name" : "bob", "things" : [ "one", "two" ] }
+```
+
+The disadvantages of `push` command is that if you push some repeated element, `push` command will insert in the document and maybe this is something that we do not want, to prevent that we can use the `set` operator *which means add elements only if they does not exists in the array*
+
+### addToSet (for array operations)
+
+As comment before in `push` command this command will add elements only if they does not exists in the array, e.g:
+
+```bash
+> db.a.update({_id:1}, {$addToSet: {things: 'two'} })
+```
+
+### Pull (for array operations)
+
+To remove a element(s) from an array, you can use `pull` command
+
+```bash
+> db.a.update({_id:1}, {$pull: {things: 'two'} })
+```
+
+You can use many times you want, since it will only remove once the element
+
+### Pop (for array operations)
+
+To remove the last element in an array
+
+```bash
+> db.a.update({_id:1}, {$pop: {things: 1} })
+```
+
+
+
+To remove the first element in an array
+
+```bash
+> db.a.update({_id:1}, {$pop: {things: -1} })
+```
+
+### Multi Update (for array operations)
+
+To update all documents in a collection (add a new entry in a specific array) you can the following sentence:
+
+```bash
+> db.a.update( {}, {$addToSet: {things: '4'}}, {multi:true})
+```
+
+> Where:
+>
+> - `{}` => means that matches with all *IDs*
+> - things => is the key to update
+> - `4` => the value to insert
+> - `multi:true` => by default only the first key in the collection will be updated, with this option means that all keys must update as well
+
+To update specific arrays with a criteria:
+
+```bash
+> db.a.update( {things:2}, {$addToSet: {things: '42'}},  {multi:true})
+```
+
+> Where:
+>
+> - `{things:2}` => means that only will be update the keys that contains in their array the value of  `2`
+
+### Find and Modify (for array operations)
+
+To affect exactly one record `find and modify` command will does the trick, the following is the signature of the command:
+
+![find_and_modify](img/find_and_modify.JPG)
+
+>  Where:
+>
+> - `foo` => is the collection to modify
+> - `query` => the condition to search
+> - `update` => the value to update
+> - `upsert` => if set to `true` mean that if there is not record exists with the criteria, this will create it
+> - `remove` => meaning that remove the document that matches with this criteria but delete exactly one record
+> - `new` => it will return the record to update from the database, by default it will return the version of the document before the change was made with, if set to `true` it will return the version of document *after* the change was made
+> - `sort` => to sort the returned value, for example with a value of `-1` the sort command will sort in descending order (the last element), and with the value of `1` will sort in ascending order (the first element), *this affect too the way to modify the results*
+> - `fields` => return only a part of the document
+
+Example:
+
+1 - Create a new collection with the following documents
+
+```bash
+> db.a.save({_id:1, things:[1,2,3]})
+> db.a.save({_id:2, things:[2,3]})
+> db.a.save({_id:3, things:[3]})
+> db.a.save({_id:4, things:[1,3]})
+```
+
+2 - Create the following object for `find and modify`
+
+```javascript
+mod = {
+    "query":{
+        "things": 1
+    },
+    "update":{
+        "$set":{
+            "touched": true
+        }  
+    },
+    "sort": {
+        "_id": -1
+    }
+}
+```
+
+3 - Run the command `find and modify`
+
+```bash
+> db.a.findAndModify(mod)
+{ "_id" : 4, "things" : [ 1, 3 ] }
+```
+
+Because the `sort` was setup to `-1` this affect to the last "things" array that contains the value 1 on it (descending order), if the `sort` was setup to `1` this will be affect to the first "things" with the value `1` on the array (ascending order)
+
+Note: set the `new` to be true, will returns the record after it was modified: `mod.new = true`
+
+# Finding Documents
+
+## Find()
+
+The `find()` command signature is the following
+
+![find_command](img/find_command.JPG)
+
+> Where:
+>
+> - `query` => its a filter, it defines the matching criteria to run against the documents
+> - `projection` => defines which part of these document should be return (this is an optional parameter)
+
+Example of query (Equality):
+
+```bash
+> db.animals.find({_id:1})
+```
+
+> Where:
+>
+> - `animals` = > collection name
+> - `{_id:1}` => find only the document with the `_id:1`
+
+Example of query *+* projection:
+
+```bash
+> db.animals.find({_id:1}, {_id:1})
+```
+
+In `projection` could be either inclusion or exclusion, in the above example we used inclusion to only retrieve the `_id:1` in the result
+
+## Comparison
+
+Some examples:
+
+```bash
+> db.animals.find({_id: {$gt:5} }, {_id:1})
+> db.animals.find({_id: {$gte:5} }, {_id:1})
+> db.animals.find({_id: {$lt:5} }, {_id:1})
+> db.animals.find({_id: {$lte:5} }, {_id:1})
+> db.animals.find({_id: {$gt:2, $lt:4} }, {_id:1})
+```
+
+> Where:
+>
+> - `gt` => means greater than ..
+> - `gte` => means greater than or equal than ...
+> - `lt` => means less than ...
+> - `lt`e => means less than or equal than ...
+
+### Negation
+
+```bash
+> db.animals.find({_id: {$not: {$gt:5} }}, {_id:1})
+```
+
+### In
+
+```bash
+> db.animals.find({_id: {$in: [1, 3] }, {_id:1})
+```
+
+The above sentence means that will find only elements with `Ids` of values 1 and 3 (inclusion)
+
+```bash
+> db.animals.find({_id: {$nin: [1, 3] }, {_id:1})
+```
+
+The above sentence means that will find only elements with `Ids` of values not in 1 and 3 (exclusion)
+
+## Arrays
+
+The following is an example of many
+
+```bash
+> db.animals.find( {tags: {$in: ['cute', 'ocean']}} )
+```
+
+The above command will find all the documents that contains `tags` field with the values `cute` or `ocean`
+
+To get `cute` and `ocean` you can use the following command:
+
+```bash
+> db.animals.find( {tags: {$all: ['cute', 'ocean']}} )
+```
+
+To exclude some arrays values we can use the following command:
+
+```bash
+> db.animals.find( {tags: {$nin: ['cute']}} )
+```
+
+## Dot Notation
+
+To find a document inside another document (a json inside another json), e.g:
+
+The following document:
+
+```javascript
+{
+    "info":{
+        "canFly": true
+    }
+}
+```
+
+To find the field (value) in the mentioned document the following sintax is needed
+
+```bash
+> db.animals.find({"info.canFly": true})
+```
+
+## Exists
+
+The `exists` mongo function will check if a subdocument or document exists, e.g:
+
+```bash
+> db.animals.find( {"info.canFly": {$exists: true}} )
+```
+
+The above command will return all the documents that have the subdocument `canFly`, if set to false, it will return all documents that does not have that subdocument
+
+## More Projection
+
+To be more specific with `find()` command in `projection` options we can do the following
+
+For retrieve only specific fields (include)
+
+```bash
+> db.animals.find({_id:1}, {_id:1, name:1})
+```
+
+> Where:
+>
+> - `1` => this value means that the fields with this value will be included
+
+To exclude fields
+
+```bash
+> db.animals.find({_id:1}, {_id:0, name:0})
+```
+
+> Where:
+>
+> - `0` => this value means that the fields with this value will be excluded
+
+Note: 
+
+1. If you have to exclude the field `_id` you must specified with a value of `0` otherwise you will get all the fields 
+2. You cannot mix and match, you will only allow to perform either `include` or `exclude`, otherwise mongo will shows an error
+
+## Sorting the results
+
+To sort the results we can use the `sort()` function
+
+```bash
+> db.animals.find({_id:1}, {_id:0, name:0}).sort({_id:-1})
+```
+
+
+
+## Limit the results
+
+To limit the number of results we can use `limit` function like this to return only 2 results:
+
+```bash
+> db.animals.find({_id:1}, {_id:0, name:0}).limit(2))
+```
+
+## Skip
+
+To skip elements we can use `skip()` function
+
+```bash
+> db.animals.find({_id:1}, {_id:0, name:0}).skip(1).limit(2))
+```
+
+
+
+## findOne
+
+The `findOne()` function will return exactly one result:
+
+```bash
+> db.animals.findOne({_id:1})
+```
+
