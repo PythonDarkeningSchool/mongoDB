@@ -179,6 +179,48 @@ Notice that you can add more options to `start` command like more verbosite `--v
 
 Note: *each time you reboot the machine this steps needs to be performed in order to start the servers*
 
+#### Configuration file
+
+Every time you start the machine you have to perform the previous step unless you define a configuration files for each one, e.g:
+
+```bash
+$ cat primary.config
+port=3000
+dbpath=primary
+logpath=primary/primary.log
+verbose=vvvvv
+replSet=demo
+
+$ cat secondary.config
+port=4000
+dbpath=secondary
+logpath=secondary/secondary.log
+verbose=vvvvv
+replSet=demo
+
+$ cat arbiter.config
+port=5000
+dbpath=arbiter
+logpath=arbiter/arbiter.log
+replSet=demo
+```
+
+and you have to call them in the following way:
+
+```bash
+> mongod -f primary.config
+> mongod -f secondary.config
+> mongod -f arbiter.config
+```
+
+and now you can enter to any database you want, e.g:
+
+```bash
+> mongo --port 3000
+```
+
+
+
 #### Configuration
 
 1 - Connect to primary database
