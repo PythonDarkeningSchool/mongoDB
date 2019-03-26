@@ -911,3 +911,20 @@ The `findOne()` function will return exactly one result:
 > db.animals.findOne({_id:1})
 ```
 
+
+
+# Indexes
+
+## Good examples
+
+Please visit [Working with indexes](https://www.guru99.com/working-mongodb-indexes.html) to see a very good explanation regarding how to understanding the indexes
+
+# Tools
+
+The Studio 3T (before "Robomongo") it is a graphical interface to manage the database
+
+[Studio 3T](https://robomongo.org)
+
+# Course in PluralSight
+
+[MongoDB Table of contents](https://app.pluralsight.com/library/courses/mongodb-introduction/table-of-contents)
