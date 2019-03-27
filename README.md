@@ -1,3 +1,104 @@
+# MongoDB
+
+## What is mongoDB?
+
+MongoDB is a document-oriented NoSQL database used for high volume data storage. MongoDB is a database which come into light around the mid-2000s. It falls under the category of a NoSQL database.
+
+## MongoDB Example
+
+The below example shows how a document can be modeled in MongoDB
+
+![document_example](img/document_example.png)
+
+1. The `_id` field is added by MongoDB to uniquely identify the document in the collection.
+2. What you can note is that the order data (OrderID, Product, and Quantity) which in RDBMS will normally be stored in a separate table, while in MongoDB is actually stored as an embedded document in the collection itselft. This is one of the key differences in how data is modeled in MongoDB.
+
+## Key Components of MongoDB Architecture
+
+Below are a few of the common terms used in MongoDB
+
+1 - `id` => This is a field required in every MongoDB document. The `_id` field represents a unique value in the MongoDB document. The `_id` field is like the document's primary key (referencing to SQL databases). If you create a new document without and `_id` field, MongoDB will automatically create the field. So for example, if we see the example of the above customer table, MongoDB will add a *24 digit unique identifier* to each document in the collection.
+
+| _id                      | CustomerID | CustomerName | OrderID |
+| ------------------------ | ---------- | ------------ | ------- |
+| 563479cc8a8a4246bd27d784 | 11         | Customer1    | Order1  |
+| 563479cc7a8a4246bd47d784 | 12         | Customer2    | Order2  |
+
+2 - `Collection` => This is a grouping of MongoDB documents. A collection is the equivalent of a table which is created in any other RDMS such as oracle or SQL Server. A collection exists within a single database. As seen from the introduction collections don't enforce any sort of structure.
+
+3 - `Cursor` => This is a pointer to the result of set of a query, Clients can iterate through a cursor to retrieve results.
+
+4 - `Database` => This is a container for collections like in RDMS wherein it is a container for tables, Each database gets its own set of files on the file system. A MongoDB server can store multiple databases.
+
+5 - `Document` => A record is an MongoDB is basically called a document, The document, it turn, will consist of field name and values.
+
+6 - `Field` => A name-value pair in a document. A document has zero or more fields. Fields are analogous to columns in relational databases. The following diagram shows an example of Fields with Key value pairs. So in the example below CustomerID and 11 is one of the key value pair's defined in the document.
+
+![example_key_value_pairs](img/example_key_value_pairs.png)
+
+7 - `JSON` => This is know as `JavaScript` Object Notation. This is a human-readable, plain text format for expressing structured data. JSON is currently supported in many programming languages.
+
+## Why Use MongoDB?
+
+Below are the few of the reasons as to why one should start using MongoDB
+
+1. Document-oriented – Since MongoDB is a NoSQL type database, instead of having data in a relational type format, it stores the data in documents. This makes MongoDB very flexible and adaptable to real business world situation and requirements.
+2. Ad hoc queries - MongoDB supports searching by field, range queries, and regular expression searches. Queries can be made to return specific fields within documents.
+3. Indexing - Indexes can be created to improve the performance of searches within MongoDB. Any field in a MongoDB document can be indexed.
+4. Replication - MongoDB can provide high availability with replica sets. A replica set consists of two or more mongo DB instances. Each replica set member may act in the role of the primary or secondary replica at any time. The primary replica is the main server which interacts with the client and performs all the read/write operations. The Secondary replicas maintain a copy of the data of the primary using built-in replication. When a primary replica fails, the replica set automatically switches over to the secondary and then it becomes the primary server.
+5. Load balancing - MongoDB uses the concept of sharding to scale horizontally by splitting data across multiple MongoDB instances. MongoDB can run over multiple servers, balancing the load and/or duplicating data to keep the system up and running in case of hardware failure.
+
+## Data Modelling in MongoDB
+
+As we have seen from the Introduction section, the data in MongoDB has a flexible schema. Unlike in[ SQL ](https://www.guru99.com/sql.html)databases, where you must have a table's schema declared before inserting data, MongoDB's collections do not enforce document structure. This sort of flexibility is what makes MongoDB so powerful.
+
+When modeling data in Mongo, keep the following things in mind
+
+1. What are the needs of the application – Look at the business needs of the application and see what data and the type of data needed for the application. Based on this, ensure that the structure of the document is decided accordingly.
+2. What are data retrieval patterns – If you foresee a heavy query usage then consider the use of indexes in your data model to improve the efficiency of queries.
+3. Are frequent insert's, updates and removals happening in the database – Reconsider the use of indexes or incorporate sharding if required in your data modeling design to improve the efficiency of your overall MongoDB environment.
+
+## NoSQL Tutorial: Learn NoSQL Features, Types, What is, Advantages
+
+Please read about this topic [here](https://www.guru99.com/nosql-tutorial.html)
+
+# Importing databases
+
+1 - Create a CSV file called data.csv and put the following data in it
+
+```tex
+Employeeid,EmployeeName
+1, Natan
+2, Mohan
+3, Smith
+```
+
+So in the above example, we are assuming we want to import 3 documents into a collection called data. The first row is called the header line which will become the Field names of the collection.
+
+![import_command](img/import_command.png)
+
+
+
+**Code Explanation:**
+
+1. We are specifying the db option to say which database the data should be imported to
+2. The type option is to specify that we are importing a csv file
+3. Remember that the first row is called the header line which will become the Field names of the collection, that is why we specify the `–headerline` option. And then we specify our data.csv file.
+
+## Exporting databases
+
+Exporting MongoDB is done by using the mongoexport command
+
+![export_command](img/export_command.png)
+
+**Code Explanation:**
+
+1. We are specifying the db option to say which database the data should be exported from.
+2. We are specifying the collection option to say which collection to use
+3. The third option is to specify that we want to export to a csv file
+4. The fourth is to specify which fields of the collection should be exported.
+5. The –out option specifies the name of the csv file to export the data to.
+
 # Setup
 
 ## Download
@@ -930,6 +1031,10 @@ Please visit [Working with indexes](https://www.guru99.com/working-mongodb-index
 The Studio 3T (before "Robomongo") it is a graphical interface to manage the database
 
 [Studio 3T](https://robomongo.org)
+
+Mongo Compass
+
+[Compass](https://www.mongodb.com/download-center/compass)
 
 # Course in PluralSight
 
