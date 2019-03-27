@@ -431,6 +431,12 @@ The execution:
 > mongo localhost script.js
 ```
 
+## Users creation
+
+For user creation please read the following post
+
+:link: [How to create users in mongoDB](https://www.guru99.com/mongodb-create-user.html)
+
 # Saving Data
 
 mongo does not have any schema to store the data because it's not a relational database
