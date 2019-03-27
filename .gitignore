@@ -1,2 +1,3 @@
 databases/test/WiredTiger.lock
 databases/test/mongod.lock
+nodejs/node_modules/*
