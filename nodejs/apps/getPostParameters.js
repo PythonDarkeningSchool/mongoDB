@@ -3,10 +3,16 @@
 var express = require('express');
 var app = express();
 var port = 3030;
+var path = require('path');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(bodyParser.json()); // support json encoded bodies
+
+// index.html
+app.get('/', function(req, res) {
+	res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 
 // routes will go here
