@@ -283,3 +283,231 @@ npm install **underscore@1.7.0**
 6 - Un-installing a package – The same in which you can install a package, you can also un-install a package. The uninstallation of a package is done with the uninstallation command of npm. The example below shows how to uninstall the express module
 
 **npm uninstall express**
+
+## What is the package.json file
+
+The "package.json" file is used to hold the **metadata about a particular project**. This information provides the Node package manager the necessary information to understand how the project should be handled along with its dependencies.
+
+The package.json files contains information such as the project description, the version of the project in a particular distribution, license information, and configuration data.
+
+The package.json file is normally located at the root directory of a Node.js project.
+
+
+
+## Create HTTP Web Server in Node.js
+
+The Node.js framework is mostly used to create server based applications. The framework can easily be used to create web servers which can serve content to users.
+
+There are a variety of modules such as the "http" and "request" module, which helps in processing server related requests in the web server space. We will have a look at how we can create a basic web server application using Node js.
+
+### Node as web server using HTTP
+
+Let's look at an example of how to create and run our first Node js application.
+
+Our application is going to create a simple server module which will listen on port no 7000. If a request is made through the browser on this port no, then server application will send a 'Hello' World' response to the client.
+
+![web_server_example_1](img/web_server_example_1.png)
+
+**Code Explanation:**
+
+1. The basic functionality of the require function is that it reads a[ JavaScript ](https://www.guru99.com/interactive-javascript-tutorials.html)file, executes the file, and then proceeds to return the exports object. So in our case, since we want to use the functionality of the http module, we use the require function to get the required functions from the http module so that it can be used in our application.
+2. In this line of code, we are creating a server application which is based on a simple function. This function is called whenever a request is made to our server application.
+3. When a request is received, we are saying to send a response with a header type of '200.' This number is the normal response which is sent in an http header when a successful response is sent to the client.
+4. In the response itself, we are sending the string 'Hello World.'
+5. We are then using the server.listen function to make our server application listen to client requests on port no 7000. You can specify any available port over here.
+
+If the command is executed successfully, the following Output will be shown when you run your code in the browser.
+
+**Output:**
+
+![web_server_output_1](img/web_server_output_1.png)
+
+From the output
+
+- You can clearly see that if we browse to the URL of localhost on port 7000, you will see the string 'Hello World' displayed in the page.
+- Because in our code we have mentioned specifically for the server to listen on port no 7000, we are able to view the output when browsing to this url.
+
+Here is the code
+
+```javascript
+var http=require('http')
+var server=http.createServer((function(request,response)
+{
+	response.writeHead(200,
+	{"Content-Type" : "text/plain"});
+	response.end("Hello World\n");
+}));
+server.listen(7000);
+```
+
+## Handling GET Requests in Node.js
+
+Making a GET Request to get the data from another site is relatively very simple in Node.js. To make a Get request in the node, we need to first have the request module installed. This can be done by executing the following line in the command line
+
+**npm install request**
+
+Now let's see the code which can make use of this 'request' command.
+
+![request_command_example](img/request_command_example.png)
+
+**Code Explanation:**
+
+1. We are using the 'require' module which was installed in the last step. This module has the necessary functions which can be used to make GET requests to websites.
+2. We are making a GET Request to www.google.com and subsequently calling a function when a response is received. When a response is received the parameters(error, response, and body) will have the following values
+   1. Error – In case there is any error received when using the GET request, this will be recorded here.
+   2. Response- The response will have the http headers which are sent back in the response.
+   3. Body- The body will contain the entire content of the response sent by Google.
+3. In this, we are just writing the content received in the body parameter to the console.log file. So basically, whatever we get by going to **www.google.com** will be written to the console.log.
+
+Here is the code for your reference
+
+```javascript
+var request = require("request");
+	request("http://www.google.com",function(error,response,body)
+	{
+		console.log(body);
+	});
+```
+
+# Node.js Express FrameWork 
+
+## What is Express.js?
+
+Express.js is a Node js web application server framework, which is specifically designed for building single-page, multi-page, and hybrid web applications.
+
+It has become the standard server framework for node.js. Express is the backend part of something known as the MEAN stack.
+
+The MEAN is a free and open-source[ JavaScript ](https://www.guru99.com/interactive-javascript-tutorials.html)software stack for building dynamic web sites and web applications which has the following components;
+
+**1) MongoDB** - The standard NoSQL database
+
+**2) Express.js** - The default web applications framework
+
+**3) Angular.js** - The JavaScript MVC framework used for web applications
+
+**4) Node.js** - Framework used for scalable server-side and networking applications.
+
+The Express.js framework makes it very easy to develop an application which can be used to handle multiple types of requests like the GET, PUT, and POST and DELETE requests
+
+## Installing and using Express
+
+Express gets installed via the Node Package manager. This can be done by executing the following line in the command line
+
+**npm install express**
+
+The above command requests the Node package manager to download the required express modules and install them accordingly.
+
+Let's use our newly installed Express framework and create a simple "Hello World" application.
+
+Our application is going to create a simple server module which will listen on port no 3000. In our example, if a request is made through the browser on this port no, then server application will send a 'Hello' World' response to the client.
+
+![express_example](img/express_example.png)
+
+```javascript
+var express=require('express');
+var app=express();
+app.get('/',function(req,res)
+{
+res.send('Hello World!');
+});
+var server=app.listen(3000,function() {});
+```
+
+**Code Explanation:**
+
+1. In our first line of code, we are using the require function to include the "express module."
+2. Before we can start using the express module, we need to make an object of the express module.
+3. Here we are creating a callback function. This function will be called whenever anybody browses to the root of our web application which is **http://localhost:3000** . The callback function will be used to send the string 'Hello World' to the web page.
+4. In the callback function, we are sending the string "Hello World" back to the client. The 'res' parameter is used to send content back to the web page. This 'res' parameter is something that is provided by the 'request' module to enable one to send content back to the web page.
+5. We are then using the listen to function to make our server application listen to client requests on port no 3000. You can specify any available port over here.3
+
+If the command is executed successfully, the following Output will be shown when you run your code in the browser
+
+
+
+## What are Routes?
+
+Routing refers for determining the way in which an application responds to a client request to a particular endpoint.
+
+For example, a client can make a GET, POST, PUT or DELETE http request for various URL's such as the one's shown below;
+
+http://localhost:3000/Books
+
+http://localhost:3000/Students
+
+In the above example,
+
+- If a GET request is made for the first URL, then the response should ideally be a list of books.
+- If the GET request is made for the second URL, then the response should ideally be a list of Students.
+- So based on the URL which is accessed, a different functionality on the web server will be invoked and accordingly the response will be sent to the client. This is the concept of routing.
+
+Each route can have one or more handler functions, which are executed when the route is matched.
+
+The general syntax for a route is shown below
+
+```
+app.METHOD(PATH, HANDLER)
+```
+
+Wherein,
+
+1) app is an instance of the express module
+
+2) METHOD is an HTTP request method (GET, POST, PUT or DELETE)
+
+3) PATH is a path on the server.
+
+4) HANDLER is the function executed when the route is matched.
+
+Let's look at an example of how we can implement routes in express. Our example will create 3 routes as
+
+1. A /Node route which will display the string "Tutorial on Node" if this route is accessed
+2. A /Angular route which will display the string "Tutorial on Angular" if this route is accessed
+3. A default route / which will display the string "Welcome to Guru99 Tutorials."
+
+Our basic code will remain the same as previous examples. The below snippet is an add-on to show case how routing is implemented.
+
+![routers_examples](img/routers_examples.png)
+
+```javascript
+var express = require('express');
+var app = express();
+app.route('/Node',get(function(req,res)
+{
+    res.send("Tutorial on Node");
+});
+post(function(req,res)
+{
+    res.send("Tutorial on Angular");
+});
+put(function(req,res)
+{
+    res.send('Welcome to Guru99 Tutorials');
+}));
+```
+
+**Code Explanation:**
+
+1. Here we are defining a route if the URL
+
+    
+
+   http://localhost:3000/Node
+
+    
+
+   is selected in the browser. To the route, we are attaching a callback function which will be called when we browse to the Node URL.
+
+   The function has 2 parameters.
+
+- The main parameter we will be using is the 'res' parameter which can be used to send information back to the client.
+- The 'req' parameter has information about the request being made. Sometimes additional parameters could be sent as part of the request being made, and hence the 'req' parameter can be used to find the additional parameters being sent.
+
+1. We are using the send function to send the string "Tutorial on Node" back to the client if the Node route is chosen.
+2. Here we are defining a route if the URL **http://localhost:3000/Angular** is selected in the browser. To the route, we are attaching a callback function which will be called when we browse to the Angular URL.
+3. We are using the send function to send the string "Tutorial on Angular" back to the client if the Angular route is chosen.
+4. This is the default route which is chosen when one browses to the route of the application – **http://localhost:3000**. When the default route is chosen, the message "Welcome to Guru99 Tutorials" will be sent to the client.
+
+# Node.js MongoDB Tutorial with Examples
+
+Please see examples [here](https://www.guru99.com/node-js-mongodb.html)
