@@ -1,25 +1,35 @@
-// Local imports
-import {API} from "./restFullApi";
+/* WebServer*/
 
-class WebServer extends API{
-    constructor(){
-        // Define the port for webserver
-        let port = "3000";
-        // Send the port to parent constructor to start the webserver
-        super(port);
+// Local imports
+import {addEndPoint} from "./restFullApi";
+import {StartAPI} from "./restFullApi";
+
+class WebServer{
+    
+    port: number;
+
+    constructor(port: number){
+        this.port = port;
+        this.addEndPoints();
+        this.start();
+    }
+
+    addEndPoints(){
+        // Add endpoints
+        let endPoint = new addEndPoint();
+        // Call needed enpoints
+        endPoint.index();
+        endPoint.users();
+        endPoint.findAllUsers();
+    }
+    start(){
+        let start = new StartAPI(this.port);
+        start;
     }
 }
-    
+
+// Define webserver port
+let port = 3000;
 // Start the webserver
-let web = new WebServer();
-// FROM HERE THIS NOT WORKING!!!!!
-// Get the app (express instantiation) and path
-let app = web.getApp;
-let path = web.getPath;
-console.log(`app = ${app} <> path = ${path}`);
-// Set the app & path in the inner class
-web.GET.setApp = app;
-web.GET.setPath = path;
-// Serve the main index.html
-web.GET.indexHTML;
+new WebServer(port);
 

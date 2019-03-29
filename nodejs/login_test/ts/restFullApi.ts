@@ -1,81 +1,66 @@
 /*RestFull API*/
 
-export class API{
+// Import local node modules
+let express = require("express");
+let assert = require("assert");
+let bodyParser = require('body-parser');
+let path = require('path');
+// Import custom node modules
+let mongoUtil = require( "./mongoConnection" );
 
-    // Class attributes
-    private app;
-    private path;
+// Define variables
+let app = express();
+let collection = "employee";
 
-    constructor(port: string){
-        // Importing node modules
-        let express = require("express");
-        let bodyParser = require('body-parser');
-        this.path = require('path');
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.json()); // support json encoded bodies
 
-        this.app = express();
-        this.app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-        this.app.use(bodyParser.json()); // support json encoded bodies
+export class addEndPoint{
 
+    // GET endpoints
+    index(){
+        let endPoint: string = "/";
+        app.get(endPoint, function(_, response) {
+            response.sendFile(path.join(__dirname + "/../html/index.html"));
+        })
+    }
+
+    // POST endpoints
+    users(){
+        let endpoint: string = "/api/users"
+        app.post(endpoint, function(request: any, response: any) {
+            let firstName = request.body.firstName;
+            let lastName = request.body.lastName;
+            response.send(`firstName: ${firstName} <> lastName: ${lastName}`);
+            console.log(request.body);
+        });
+    }
+
+    findAllUsers(){
+        let endpoint: string = "/api/queries/findAllUsers"
+        app.post(endpoint, function(request: any, response: any) {
+
+            mongoUtil.connectToServer( function( err: object ) {
+                // start the rest of your app here
+                let db = mongoUtil.getConnection();
+              
+                db.collection(collection).find({}).toArray(function(err: object, result: object) {
+                  assert.equal(null, err);
+                  // Show results
+                  console.log(result);
+                  response.send(result);
+                  // Disconnect
+                  mongoUtil.disconnect();
+                });
+              });
+        });
+    }
+}
+
+export class StartAPI{
+    constructor(port: number){
         // Start the server
-        this.app.listen(port);
-        console.log(`Server started! at => http://localhost:${port}`);
-    }
-
-    // Define the getters
-    get getApp(){
-        return this.app;
-    }
-    
-    get getPath(){
-        return this.path;
-    }
-
-    /* ====================
-        HTTP Verbs
-       ====================
-    */
-
-    // Inner class
-    public GET = new class {
-        private app: any;
-        private path: any;
-
-        // Define the setters
-        set setApp(app: any){
-            this.app = app;
-        }
-
-        set setPath(path: any){
-            this.path = path;
-        }
-
-        // Add GET endpoints here ...
-
-        // <Serve the main index.html>
-        public indexHTML(): void {
-            let endPoint: string = "/";
-
-            this.app.get(endPoint, function(_, response) {
-                response.sendFile(this.path.join(__dirname + "../html/index.html"));
-                console.log("serve => index.html");
-            })
-        }        
-    }
-
-    public POST(){
-        // Add POST endpoints here ...
-        
-        // <login endpoint>
-        let login = (): void => {
-            let endPoint: string = "/login";
-
-            this.app.post(endPoint, function(request, response) {
-                // Grab the variables from the POST method
-                let firstname = request.body.firstname;
-                let lastname = request.body.lastname;
-                response.send(`name is: ${name} <> lastname is ${lastname}`);
-                console.log(request.body);
-            });
-        }
+        app.listen(port);
+        console.log(`(info) Server started! at => http://localhost:${port}`);
     }
 }

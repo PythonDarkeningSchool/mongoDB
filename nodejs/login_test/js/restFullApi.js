@@ -1,69 +1,55 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var API = (function () {
-    function API(port) {
-        this.GET = new (function () {
-            function class_1() {
-            }
-            Object.defineProperty(class_1.prototype, "setApp", {
-                set: function (app) {
-                    this.app = app;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(class_1.prototype, "setPath", {
-                set: function (path) {
-                    this.path = path;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            class_1.prototype.indexHTML = function () {
-                var endPoint = "/";
-                this.app.get(endPoint, function (_, response) {
-                    response.sendFile(this.path.join(__dirname + "../html/index.html"));
-                    console.log("serve => index.html");
-                });
-            };
-            return class_1;
-        }());
-        var express = require("express");
-        var bodyParser = require('body-parser');
-        this.path = require('path');
-        this.app = express();
-        this.app.use(bodyParser.urlencoded({ extended: true }));
-        this.app.use(bodyParser.json());
-        this.app.listen(port);
-        console.log("Server started! at => http://localhost:" + port);
+var express = require("express");
+var assert = require("assert");
+var bodyParser = require('body-parser');
+var path = require('path');
+var mongoUtil = require("./mongoConnection");
+var app = express();
+var collection = "employee";
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+var addEndPoint = (function () {
+    function addEndPoint() {
     }
-    Object.defineProperty(API.prototype, "getApp", {
-        get: function () {
-            return this.app;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(API.prototype, "getPath", {
-        get: function () {
-            return this.path;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    API.prototype.POST = function () {
-        var _this = this;
-        var login = function () {
-            var endPoint = "/login";
-            _this.app.post(endPoint, function (request, response) {
-                var firstname = request.body.firstname;
-                var lastname = request.body.lastname;
-                response.send("name is: " + name + " <> lastname is " + lastname);
-                console.log(request.body);
-            });
-        };
+    addEndPoint.prototype.index = function () {
+        var endPoint = "/";
+        app.get(endPoint, function (_, response) {
+            response.sendFile(path.join(__dirname + "/../html/index.html"));
+        });
     };
-    return API;
+    addEndPoint.prototype.users = function () {
+        var endpoint = "/api/users";
+        app.post(endpoint, function (request, response) {
+            var firstName = request.body.firstName;
+            var lastName = request.body.lastName;
+            response.send("firstName: " + firstName + " <> lastName: " + lastName);
+            console.log(request.body);
+        });
+    };
+    addEndPoint.prototype.findAllUsers = function () {
+        var endpoint = "/api/queries/findAllUsers";
+        app.post(endpoint, function (request, response) {
+            mongoUtil.connectToServer(function (err) {
+                var db = mongoUtil.getConnection();
+                db.collection(collection).find({}).toArray(function (err, result) {
+                    assert.equal(null, err);
+                    console.log(result);
+                    response.send(result);
+                    mongoUtil.disconnect();
+                });
+            });
+        });
+    };
+    return addEndPoint;
 }());
-exports.API = API;
+exports.addEndPoint = addEndPoint;
+var StartAPI = (function () {
+    function StartAPI(port) {
+        app.listen(port);
+        console.log("(info) Server started! at => http://localhost:" + port);
+    }
+    return StartAPI;
+}());
+exports.StartAPI = StartAPI;
 //# sourceMappingURL=restFullApi.js.map
