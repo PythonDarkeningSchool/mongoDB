@@ -1,7 +1,13 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "outFile": "../js/app.js",
+        //"outFile": "../js/app.js",
+        "outDir": "../js",
+        "removeComments": true,
+        //"noUnusedParameters": true,
+        //"pretty": true,
+        //"declaration": true,
+        "moduleResolution": "node",
         "sourceMap": true
     }
 }

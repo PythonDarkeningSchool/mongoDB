@@ -8,7 +8,7 @@ class Mongodb {
         let MongoClient = require("mongodb").MongoClient;
         this.assert = require('assert');
         // Assing variables
-        let uri = `mongodb://${user}:${password}@${cluster}/${db}?${clusterOptions}`;
+        let uri: string = `mongodb://${user}:${password}@${cluster}/${db}?${clusterOptions}`;
 
         // Making the db connection
         MongoClient.connect(uri, function(err, db) {
@@ -18,7 +18,7 @@ class Mongodb {
         });  
     }
 
-    Query(collection: string, query: string){
+    Query(collection: string, query: string): void {
         this.db.collection(collection).find(query).toArray(function(err, result) {
             // Show an assert on error
             this.assert.equal(null, err);
@@ -26,6 +26,11 @@ class Mongodb {
             // Close mongoDB connection
             this.db.close();
           });
+    }
+
+    PrintVariables(): void {
+        console.log(`typeof(db) => ${typeof(this.db)}`);
+        console.log(`typeof(assert) => ${typeof(this.assert)}`);
     }
 
 }

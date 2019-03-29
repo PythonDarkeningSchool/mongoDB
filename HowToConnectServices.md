@@ -77,7 +77,7 @@ References:
 
 - [Use expressjs to get url and post parameters](https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters)
 
-### Server HTML files
+### Serve HTML files
 
 ```javascript
 
