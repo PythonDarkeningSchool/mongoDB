@@ -1,8 +1,9 @@
 /* WebServer*/
 
 // Local imports
-import {addEndPoint} from "./restFullApi";
-import {StartAPI} from "./restFullApi";
+require("module-alias/register");
+import { addEndPoint } from "@services/restFullApi";
+import { StartAPI } from "@services/restFullApi";
 
 class WebServer{
     

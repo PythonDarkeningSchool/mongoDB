@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var restFullApi_1 = require("./restFullApi");
-var restFullApi_2 = require("./restFullApi");
+require("module-alias/register");
+var restFullApi_1 = require("@services/restFullApi");
+var restFullApi_2 = require("@services/restFullApi");
 var WebServer = (function () {
     function WebServer(port) {
         this.port = port;
@@ -22,4 +23,3 @@ var WebServer = (function () {
 }());
 var port = 3000;
 new WebServer(port);
-//# sourceMappingURL=webServer.js.map

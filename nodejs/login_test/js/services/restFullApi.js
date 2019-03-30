@@ -4,7 +4,7 @@ var express = require("express");
 var assert = require("assert");
 var bodyParser = require('body-parser');
 var path = require('path');
-var mongoUtil = require("./mongoConnection");
+var mongoUtil = require("../database/mongoConnection");
 var app = express();
 var collection = "employee";
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,4 +52,3 @@ var StartAPI = (function () {
     return StartAPI;
 }());
 exports.StartAPI = StartAPI;
-//# sourceMappingURL=restFullApi.js.map

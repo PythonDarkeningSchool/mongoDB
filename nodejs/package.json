@@ -9,11 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/module-alias": "^2.0.0",
     "@types/node": "^11.12.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "module-alias": "^2.2.0",
     "mongodb": "^2.2.33",
     "mongodb-stitch-browser-sdk": "^4.3.2",
     "nodemon": "^1.18.10"
+  },
+  "_moduleAliases": {
+    "@services": "./login_test/js/services",
+    "@databases": "./login_test/js/databases"
   }
 }

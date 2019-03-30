@@ -25,4 +25,3 @@ module.exports = {
         console.log("(info) Disconnected from: " + externalDB);
     }
 };
-//# sourceMappingURL=mongoConnection.js.map

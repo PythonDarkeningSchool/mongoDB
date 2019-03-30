@@ -6,7 +6,7 @@ let assert = require("assert");
 let bodyParser = require('body-parser');
 let path = require('path');
 // Import custom node modules
-let mongoUtil = require( "./mongoConnection" );
+let mongoUtil = require( "../database/mongoConnection" );
 
 // Define variables
 let app = express();
