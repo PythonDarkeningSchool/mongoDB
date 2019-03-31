@@ -41,7 +41,7 @@ export class addEndPoint{
         app.post(endpoint, function(request: any, response: any) {
 
             mongoUtil.connectToServer( function( err: object ) {
-                // start the rest of your app here
+                // instantiate the connection
                 let db = mongoUtil.getConnection();
               
                 db.collection(collection).find({}).toArray(function(err: object, result: object) {
