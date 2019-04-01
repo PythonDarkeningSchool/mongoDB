@@ -9,7 +9,7 @@ let user = "hiperezr";
 let password = "Focus.12";
 let cluster = "cluster0-shard-00-00-mexzx.mongodb.net"
 let clusterPort = "27017"
-let externalDB = "employees";
+let externalDB = "auth";
 let clusterOptions = "ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
 let uri = `mongodb://${user}:${password}@${cluster}:${clusterPort}/${externalDB}?${clusterOptions}`;
 

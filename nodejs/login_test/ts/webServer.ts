@@ -22,6 +22,7 @@ class WebServer{
         endPoint.index();
         endPoint.users();
         endPoint.findAllUsers();
+        endPoint.auth();
     }
     start(){
         let start = new StartAPI(this.port);

@@ -14,6 +14,7 @@ var WebServer = (function () {
         endPoint.index();
         endPoint.users();
         endPoint.findAllUsers();
+        endPoint.auth();
     };
     WebServer.prototype.start = function () {
         var start = new restFullApi_2.StartAPI(this.port);

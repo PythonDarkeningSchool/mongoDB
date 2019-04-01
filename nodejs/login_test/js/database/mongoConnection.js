@@ -5,7 +5,7 @@ var user = "hiperezr";
 var password = "Focus.12";
 var cluster = "cluster0-shard-00-00-mexzx.mongodb.net";
 var clusterPort = "27017";
-var externalDB = "employees";
+var externalDB = "auth";
 var clusterOptions = "ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
 var uri = "mongodb://" + user + ":" + password + "@" + cluster + ":" + clusterPort + "/" + externalDB + "?" + clusterOptions;
 var _db;
