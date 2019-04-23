@@ -58,7 +58,7 @@ The `IDE` to be used here will be *Visual Studio Code* because it has support fo
 Create the following folders
 
 ```bash
-$ mkdir -p .vscode ts/database ts/services js html
+$ mkdir -p .vscode ts/database ts/services js/services js/database	 html
 ```
 
 `ts` stand for TypeScript files
@@ -107,6 +107,8 @@ The file `package.json` is the file that contains information of the project and
 }
 
 ```
+
+Install all dependencies with the command `npm install`
 
 ##### package.json structure
 
