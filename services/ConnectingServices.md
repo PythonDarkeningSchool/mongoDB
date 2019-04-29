@@ -307,6 +307,7 @@ let collection = "<database_connection>";
 
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(bodyParser.json()); // support json encoded bodies
+app.use(express.static(path.join(__dirname, "../../../html"))); // TO SERVER ALL FILES INTO HTML FOLDER!!!
 
 export class addEndPoint{
 
@@ -360,6 +361,8 @@ export class StartAPI{
 ```
 
 The *GET*  and  *POST* endpoints are examples, you can build more if you want.
+
+> Please notice specific attention into *express.static* since this will be serve all html files into this path
 
 ## webserver.ts
 
