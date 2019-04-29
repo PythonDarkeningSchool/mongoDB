@@ -583,11 +583,11 @@ If you run the above command into another database it will not shows the `fooCol
 
 The data types for `Id` field supports are:
 
-![permitted_Ids](img/permitted_Ids.jpg)
+![permitted_Ids](img/permitted_Ids.JPG)
 
 The only data type exclude is an array:
 
-![excluded_Ids](img/excluded_Ids.jpg)
+![excluded_Ids](img/excluded_Ids.JPG)
 
 ## Object Id
 
