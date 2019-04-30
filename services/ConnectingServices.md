@@ -91,6 +91,7 @@ The file `package.json` is the file that contains information of the project and
   "author": "<author>",
   "license": "ISC",
   "dependencies": {
+    "@types/jquery": "^3.3.29",
     "@types/module-alias": "^2.0.0",
     "@types/node": "^11.12.0",
     "body-parser": "^1.18.3",
@@ -103,6 +104,9 @@ The file `package.json` is the file that contains information of the project and
   "_moduleAliases": {
     "@services": "./<root_folder>/js/services",
     "@databases": "./<root_folder>/js/databases"
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^4.3.0"
   }
 }
 
